@@ -165,9 +165,44 @@ The Yahoo fallback path has been tested successfully.
 
 Cached Bloomberg-based quantum results are protected by a source guard and are not mixed with Yahoo-derived preprocessing.
 
-## Tested environment
+## Testing environment
 
 Python 3.12.10, Qiskit 2.5.2, qiskit-machine-learning 0.9.1, and scikit-learn 1.9.1. The remaining packages are listed in `requirements.txt`.
+
+### Setting up the environment
+
+The following commands should be run in the `qubit-crew_QFF2026_uottawa` folder (Essentially, in the same folder as this README file).
+
+#### Creating the environment
+This repository should already include the files of our environment (`qff26`). If this environment is not present, please run this command to create it:
+
+```
+python -m venv qff26
+```
+
+#### Activating the environment
+On Windows
+```
+.\qff26\Scripts\Activate.ps1 
+```
+
+On macOS and Linux
+```
+source qff26/bin/activate
+```
+
+#### Installing the dependencies
+```
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+#### Running the main Jupyter Notebook
+
+**On VS Code Studio**
+
+- Simply open the `notebooks/qregime_final_pipeline.ipynb` and run it following the instructions in [reproducibility](#reproducibility). You will have to select `qqf26` as Python kernel.
+
 
 ## Team
 
