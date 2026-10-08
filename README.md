@@ -145,9 +145,38 @@ Natural next steps are other quantum feature maps, finite-shot and noisy simulat
 
 The main notebook is `notebooks/qregime_final_pipeline.ipynb`. A default run loads the saved Bloomberg quantum results (`RUN_EXPENSIVE_QUANTUM = False`). Recomputing those experiments requires `RUN_EXPENSIVE_QUANTUM = True`.
 
-## Tested environment
+## Testing environment
 
 Python 3.12.10, Qiskit 2.5.2, qiskit-machine-learning 0.9.1, and scikit-learn 1.9.1. The remaining packages are listed in `requirements.txt`.
+
+### Setting up the environment
+
+The following commands should be run in the `qubit-crew_QFF2026_uottawa` folder (Essentially, in the same folder as this README file).
+
+#### Creating the environment
+This repository should already include the files of our environment (`qff26`). If this environment is not present, please run this command to create it:
+
+```
+python -m venv qff26
+```
+
+#### Activating the environment
+On Windows
+```
+.\qff26\Scripts\Activate.ps1 
+```
+
+On macOS and Linux
+```
+source qff26/bin/activate
+```
+
+#### Installing the dependencies
+```
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
 
 ## Team
 
