@@ -137,9 +137,37 @@ The times in that figure are classical-simulator wall-clock times, not quantum-h
 
 This is a narrow result. We studied one feature-map family, on a classical simulator, without hardware noise. The three historical windows are chronological, and at larger N they are not fully independent. We did not search for another quantum model after seeing the test set. None of that is a claim against quantum machine learning in general. It says that for this S&P 500 five-day regime task, with these four features and these small labeled sets, the tested quantum kernel did not beat the classical alternatives.
 
-## Future work
+## Limitations
 
-Natural next steps are other quantum feature maps, finite-shot and noisy simulation, a run on IBM Quantum hardware, other equity indexes and volatility horizons, and a high-volatility threshold that can move through time.
+Important limitations include:
+
+- only one primary quantum feature-map family was studied,
+- the quantum design search was intentionally limited by hackathon compute and time constraints,
+- the quantum kernel was evaluated on a classical simulator rather than quantum hardware,
+- no finite-shot noise model was included,
+- only four final financial features were used,
+- the three historical training windows are chronological but not fully independent at larger N,
+- financial regimes can change substantially across decades.
+
+The final results should *not* be interpreted as evidence against quantum machine learning in general.
+
+We deliberately avoided expanding the quantum-model search after seeing the final test results because doing so would risk post-hoc model selection.
+
+## Future Work
+
+Natural extensions include:
+
+- alternative quantum feature maps,
+- alternative feature scaling,
+- statevector-based kernel implementations,
+- finite-shot kernel estimation,
+- noisy simulator experiments,
+- real IBM Quantum hardware,
+- alternative volatility horizons,
+- other equity indices,
+- rolling or adaptive volatility thresholds,
+- larger but carefully controlled feature sets,
+- additional quantum/classical kernel comparisons.
 
 ## Reproducibility
 
@@ -164,6 +192,8 @@ If the Bloomberg volatility file is absent, the notebook automatically switches 
 The Yahoo fallback path has been tested successfully.
 
 Cached Bloomberg-based quantum results are protected by a source guard and are not mixed with Yahoo-derived preprocessing.
+
+
 
 ## Testing environment
 
@@ -203,6 +233,37 @@ python -m pip install -r requirements.txt
 
 - Simply open the `notebooks/qregime_final_pipeline.ipynb` and run it following the instructions in [reproducibility](#reproducibility). You will have to select `qqf26` as Python kernel.
 
+
+
+## Repository Structure
+
+```text
+Q-Regime/
+│
+├── data/
+│   ├── raw/
+│   └── processed/
+│       ├── qregime_clean_dataset.csv
+│       ├── qregime_train.csv
+│       ├── qregime_validation.csv
+│       ├── qregime_test.csv
+│       └── ...
+│
+├── notebooks/
+│   ├── qregime_experiments_v1.ipynb
+│   └── qregime_final_pipeline.ipynb
+│
+├── results/
+│   └── ...
+│
+├── src/
+├── HANDOFF.md
+├── README.md
+├── requirements.txt
+└── .gitignore
+```
+
+The proprietary Bloomberg source file is excluded from Git. The public Yahoo Finance fallback keeps the volatility-preprocessing pipeline reproducible.
 
 ## Team
 
