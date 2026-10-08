@@ -94,6 +94,10 @@ A classical RBF-SVM decides whether two market days are similar with a mathemati
 
 The quantum feature map was chosen on validation, before the test set was opened. At N = 100, on the same three windows, a shallow map (one repetition, linear entanglement, circuit depth 11) beat a deeper full-entanglement map (two repetitions, depth 31). The shallow map was also faster on a classical simulator: about 21 seconds to train and 84 seconds to predict, versus about 47 and 194 seconds. Those times are simulator wall-clock times on a classical machine, not quantum-hardware runtimes. The deeper map was slower and less accurate, so the final quantum model is the shallow one.
 
+<p align="center">
+  <img src="results/quantum_design_comparison.png" alt="Shallow linear feature map versus deeper full entanglement on validation" width="600">
+</p>
+
 ## Results
 
 On the 2021–2022 validation set, the four-feature RBF-SVM was a reasonable learned baseline. At N = 100, averaged across the three thinned training windows, its mean ROC-AUC was about **0.898**. The 5-day persistence score on that validation period was **0.859**. At that stage, the learned classical kernel sat above persistence.
@@ -107,9 +111,17 @@ The final test is the 2023–2024 period, which was not used to choose features 
 | RBF-SVM | 0.747 | 0.818 | 0.609 | 0.667 |
 | Qiskit quantum kernel | 0.711 | 0.749 | 0.552 | 0.680 |
 
-Five-day persistence leads. The RBF-SVM is next. The quantum kernel is third. Its high-volatility recall ties 5-day persistence at 0.680. That is not an overall win: recall depends on the decision threshold, and balanced accuracy, ROC-AUC, and F1 stay lower.
+Five-day persistence leads. The RBF-SVM is next. The quantum kernel is third. Its high-volatility recall ties 5-day persistence at 0.680. That is not an overall win: recall depends on the decision threshold, and balanced accuracy, ROC-AUC, and F1 stay lower. Where a result is reported as a spread across the three training windows, that spread is descriptive variability, not a formal confidence interval, because the windows can overlap at larger N.
 
 The quantum scores do improve as the labeled set grows. Mean ROC-AUC rises from about **0.593** at N = 20 to **0.749** at N = 200. It stays below the RBF-SVM at every training size we tested. The validation ranking also does not fully survive the untouched years. On 2021–2022 the RBF-SVM led persistence. On 2023–2024, persistence leads.
+
+<p align="center">
+  <img src="results/final_test_roc_auc.png" alt="Final-test ROC-AUC across training sizes" width="620">
+</p>
+
+<p align="center">
+  <img src="results/final_test_balanced_accuracy.png" alt="Final-test balanced accuracy across training sizes" width="620">
+</p>
 
 ## Answer
 
@@ -117,4 +129,32 @@ Under this configuration, the answer is no.
 
 A Qiskit quantum-kernel classifier can rank upcoming high-volatility weeks above chance once it has more labeled examples, and its scores rise with the training budget. On the final test it does not match the classical RBF-SVM, and neither learned model matches 5-day persistence. Persistence is the best final-test reference. The RBF-SVM is the better learned model. The quantum kernel did not offset its simulation cost.
 
+<p align="center">
+  <img src="results/performance_vs_prediction_runtime.png" alt="Final-test performance versus classical-simulator prediction time" width="620">
+</p>
+
+The times in that figure are classical-simulator wall-clock times, not quantum-hardware runtimes. Additional figures are in `results/final_test_prediction_runtime.png`, `results/training_simulation_runtime.png`, `results/final_test_f1_score.png`, and `results/final_test_high_vol_recall.png`.
+
 This is a narrow result. We studied one feature-map family, on a classical simulator, without hardware noise. The three historical windows are chronological, and at larger N they are not fully independent. We did not search for another quantum model after seeing the test set. None of that is a claim against quantum machine learning in general. It says that for this S&P 500 five-day regime task, with these four features and these small labeled sets, the tested quantum kernel did not beat the classical alternatives.
+
+## Future work
+
+Natural next steps are other quantum feature maps, finite-shot and noisy simulation, a run on IBM Quantum hardware, other equity indexes and volatility horizons, and a high-volatility threshold that can move through time.
+
+## Reproducibility
+
+The main notebook is `notebooks/qregime_final_pipeline.ipynb`. A default run loads the saved Bloomberg quantum results (`RUN_EXPENSIVE_QUANTUM = False`). Recomputing those experiments requires `RUN_EXPENSIVE_QUANTUM = True`.
+
+## Tested environment
+
+Python 3.12.10, Qiskit 2.5.2, qiskit-machine-learning 0.9.1, and scikit-learn 1.9.1. The remaining packages are listed in `requirements.txt`.
+
+## Team
+
+Qubit Crew · Qiskit Fall Fest 2026 · University of Ottawa
+
+- **Aicha:** Contributed to the experimental and evaluation pipeline, including data integration, chronological train/validation/test design, classical RBF-SVM benchmarking, final-test analysis, result visualizations, reproducibility checks, and final notebook integration.
+- **Noura:** Contributed to the quantum and notebook implementation, including multiple pipeline functions, Qiskit quantum-kernel experiments, feature-map design comparisons, resource tracking, aggregation of quantum results, and notebook refinements.
+- **Yassir:** Contributed to the finance, data, and documentation pipeline, including sourcing and cleaning Bloomberg volatility data, financial problem framing, volatility-measure selection and interpretation, validation of the market-data setup, methodology documentation, and drafting and structuring the project README.
+
+Built for Qiskit Fall Fest 2026 at the University of Ottawa using Qiskit and open-source Python tools.
